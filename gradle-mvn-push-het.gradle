@@ -47,7 +47,7 @@ afterEvaluate { project ->
                 //becase het is not sigining
                 //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-                pom.groupId = GROUP_HET
+                pom.groupId = GROUP
                 pom.artifactId = POM_ARTIFACT_ID
                 pom.version = VERSION_NAME
 
