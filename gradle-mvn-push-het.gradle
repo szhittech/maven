@@ -98,7 +98,7 @@ afterEvaluate { project ->
 
 
     //all right,add this code will result in the unreadable code
-    /*task androidJavadocs(type: Javadoc) {
+    task androidJavadocs(type: Javadoc) {
         source = android.sourceSets.main.java.srcDirs
         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }
@@ -113,5 +113,5 @@ afterEvaluate { project ->
     artifacts {
         archives androidSourcesJar
         //archives androidJavadocsJar
-    }*/
+    }
 }
