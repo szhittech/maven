@@ -1,4 +1,5 @@
 ext{
-   test = [uuxia:"xiaxiaoli:1.0.0"
+   test = [uuxia:"xiaxiaoli:1.0.0",
+uufeng:"feng:1.0.0"
 ]
 }
