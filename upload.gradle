@@ -48,8 +48,12 @@ def getSnapshotRepositoryUrl() {
 
 def getRepositoryUsername() {
     if (isHet()){
+        println("==========提交版本到HeT私服==="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
+        println("============Snapshot:"+getSnapshotRepositoryUrl() + " Release:"+getReleaseRepositoryUrl())
         return rootProject.ext.config.NEXUS_USERNAME_HET
     }else{
+        println("==========提交版本到远程Maven私服==="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
+        println("============Snapshot:"+getSnapshotRepositoryUrl() + " Release:"+getReleaseRepositoryUrl())
         return rootProject.ext.config.NEXUS_USERNAME
     }
 
@@ -69,7 +73,6 @@ afterEvaluate { project ->
             mavenDeployer {
                 //becase het is not sigining pad POM_ARTIFACT_ID VERSION_NAME
                 //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                println("============="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
                 pom.groupId = rootProject.ext.config.GROUP
                 pom.artifactId = rootProject.ext.libsname["${project.modulename}"]
                 pom.version = rootProject.ext.libsversion["${project.modulename}"]
