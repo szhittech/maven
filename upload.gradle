@@ -1,5 +1,5 @@
 /*
- * Copyright 2016.11.17 szhittech
+ * Copyright 2016 szhittech
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,12 @@ apply plugin: 'maven'
 //becase het is not sigining
 //apply plugin: 'signing'
 def isHet() {
-    return ISHET.contains("het")
+    def has = hasProperty('NEXUS_TYPE');
+    if (has){
+        return NEXUS_TYPE.contains("maven")?false:true;
+    }else{
+        return false;
+    }
 }
 
 def isReleaseBuild() {
@@ -64,7 +69,7 @@ afterEvaluate { project ->
             mavenDeployer {
                 //becase het is not sigining pad POM_ARTIFACT_ID VERSION_NAME
                 //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                println("=============提交版本："+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
+                println("============="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
                 pom.groupId = rootProject.ext.config.GROUP
                 pom.artifactId = rootProject.ext.libsname["${project.modulename}"]
                 pom.version = rootProject.ext.libsversion["${project.modulename}"]
