@@ -64,7 +64,7 @@ afterEvaluate { project ->
             mavenDeployer {
                 //becase het is not sigining pad POM_ARTIFACT_ID VERSION_NAME
                 //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                println("============="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
+                println("=============提交版本："+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
                 pom.groupId = rootProject.ext.config.GROUP
                 pom.artifactId = rootProject.ext.libsname["${project.modulename}"]
                 pom.version = rootProject.ext.libsversion["${project.modulename}"]
