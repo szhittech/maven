@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 szhittech
+ * Copyright 2016 szhittech
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,38 +27,34 @@ def isReleaseBuild() {
 
 def getReleaseRepositoryUrl() {
     if (isHet()){
-        return hasProperty('HET_NEXUS_RELEASES') ? HET_NEXUS_RELEASES
-                : "http://200.200.200.40:8083/nexus/content/repositories/releases/"
+        return rootProject.ext.config.HET_NEXUS_RELEASES
     }else{
-        hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
-                : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+        return rootProject.ext.config.JCENTER_NEXUS_RELEASES
     }
 }
 
 def getSnapshotRepositoryUrl() {
     if (isHet()){
-        return hasProperty('HET_NEXUS_SNAPSHOTS') ? HET_NEXUS_SNAPSHOTS
-                : "http://200.200.200.40:8083/nexus/content/repositories/snapshots/"
+        return rootProject.ext.config.HET_NEXUS_SNAPSHOTS
     }else{
-        return hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL
-                : "https://oss.sonatype.org/content/repositories/snapshots/"
+        return rootProject.ext.config.JCENTER_NEXUS_SNAPSHOTS
     }
 }
 
 def getRepositoryUsername() {
     if (isHet()){
-        return hasProperty('NEXUS_USERNAME_HET') ? NEXUS_USERNAME_HET : ""
+        return rootProject.ext.config.NEXUS_USERNAME_HET
     }else{
-        return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+        return rootProject.ext.config.NEXUS_USERNAME
     }
 
 }
 
 def getRepositoryPassword() {
     if (isHet()){
-        return hasProperty('NEXUS_PASSWORD_HET') ? NEXUS_PASSWORD_HET : ""
+        return rootProject.ext.config.NEXUS_PASSWORD_HET
     }else{
-        return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
+        return rootProject.ext.config.NEXUS_PASSWORD
     }
 }
 
@@ -69,7 +65,7 @@ afterEvaluate { project ->
                 //becase het is not sigining pad POM_ARTIFACT_ID VERSION_NAME
                 //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
                 println("=================="+project.modulename +":"+project.moduleversion)
-                pom.groupId = GROUP
+                pom.groupId = rootProject.ext.config.GROUP
                 pom.artifactId = project.modulename
                 pom.version = project.moduleversion
 
@@ -82,30 +78,30 @@ afterEvaluate { project ->
 
                 pom.project {
                     name project.modulename
-                    packaging POM_PACKAGING
-                    description POM_DESCRIPTION
+                    packaging rootProject.ext.config.POM_PACKAGING
+                    description rootProject.ext.config.POM_DESCRIPTION
                     //annotation
-                    //url POM_URL
+                    //url rootProject.ext.config.POM_URL
 
                     //becase het is not connect the third Maven Centeral
                     /*scm {
-                        url POM_SCM_URL
-                        connection POM_SCM_CONNECTION
-                        developerConnection POM_SCM_DEV_CONNECTION
+                        url rootProject.ext.config.POM_SCM_URL
+                        connection rootProject.ext.config.POM_SCM_CONNECTION
+                        developerConnection rootProject.ext.config.POM_SCM_DEV_CONNECTION
                     }*/
 
                     licenses {
                         license {
-                            name POM_LICENCE_NAME
-                            url POM_LICENCE_URL
-                            distribution POM_LICENCE_DIST
+                            name rootProject.ext.config.POM_LICENCE_NAME
+                            url rootProject.ext.config.POM_LICENCE_URL
+                            distribution rootProject.ext.config.POM_LICENCE_DIST
                         }
                     }
 
                     developers {
                         developer {
-                            id POM_DEVELOPER_ID
-                            name POM_DEVELOPER_NAME
+                            id rootProject.ext.config.POM_DEVELOPER_ID
+                            name rootProject.ext.config.POM_DEVELOPER_NAME
                         }
                     }
                 }
