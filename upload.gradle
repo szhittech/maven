@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 szhittech
+ * Copyright 2016.11.17 szhittech
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,10 +64,10 @@ afterEvaluate { project ->
             mavenDeployer {
                 //becase het is not sigining pad POM_ARTIFACT_ID VERSION_NAME
                 //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                println("=================="+project.modulename +":"+project.moduleversion)
+                println("============="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
                 pom.groupId = rootProject.ext.config.GROUP
-                pom.artifactId = project.modulename
-                pom.version = project.moduleversion
+                pom.artifactId = rootProject.ext.libsname["${project.modulename}"]
+                pom.version = rootProject.ext.libsversion["${project.modulename}"]
 
                 repository(url: getReleaseRepositoryUrl()) {
                     authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
