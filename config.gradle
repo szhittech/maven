@@ -1,0 +1,80 @@
+ext {
+    //Android编译版本管理
+    android = [compileSdkVersion: 23,
+               buildToolsVersion: "23.0.2",
+               minSdkVersion    : 15,
+               targetSdkVersion : 23,
+               versionCode      : 1,
+               versionName      : "1.0"]
+
+    //第三方依赖库
+    thirddependencies = ["appcompat-v7"       : 'com.android.support:appcompat-v7:23.0.1',
+                         "logging-interceptor": 'com.squareup.okhttp3:logging-interceptor:3.1.2',
+                         "rxandroid"          : 'io.reactivex:rxandroid:1.2.1',
+                         "adapter-rxjava"     : 'com.squareup.retrofit2:adapter-rxjava:2.0.2',
+                         "retrofit"           : 'com.squareup.retrofit2:retrofit:2.1.0',
+                         "converter-gson"     : 'com.squareup.retrofit2:converter-gson:2.0.0-beta3',
+                         "gson"               : 'com.google.code.gson:gson:2.6.2',
+                         "activeandroid"      : 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT',
+                         "butterknife"        : 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT',
+                         "fresco"             : 'com.facebook.fresco:fresco:0.9.0+'
+    ]
+
+    //HeT依赖库版本管理
+    libsversion = [hetapmodule      : "1.0.0-SNAPSHOT",//和而泰AP绑定(hetapmodule) 模组ID：28
+                   hetsmartlink     : "1.0.0-SNAPSHOT", //和而泰smartlink绑定(在庆科基础上修改 hetsmartlink) 模组ID：10
+                   realtekmodule    : "1.0.0-SNAPSHOT",//科中龙(realtekmodule) 模组ID：4
+                   xlwmodule        : "1.0.0-SNAPSHOT",//新力维_NL6621底层库(xlwmodule) 模组ID：6
+                   sctechmodule     : "1.0.0-SNAPSHOT",//双驰达(sctechmodule) 模组ID：15
+                   elianmodule      : "1.0.0-SNAPSHOT",//信驰达_MTK7681底层库(elianmodule) 模组ID：5
+                   marvellmodule    : "1.0.0-SNAPSHOT",//Marvell(marvellmodule) 模组ID：v1=8，v2=27
+                   esptouchmodule   : "1.0.0-SNAPSHOT", //乐鑫信息科技(esptouchmodule) 模组ID：7
+                   cooeemodule      : "1.0.0-SNAPSHOT",//博通(cooeemodule) 模组ID：20
+
+                   hetlogsdk        : "1.0.0-SNAPSHOT",//全局日志库
+                   hetbindbizsdk    : "1.0.2-SNAPSHOT",//绑定业务库
+                   hetbinduisdk     : "1.0.2-SNAPSHOT",//绑定界面库
+                   hetudpsdk        : "1.0.4-SNAPSHOT",//udp通讯库
+                   hetxmlprotocolsdk: "1.0.0-SNAPSHOT",//xml协议解析库
+    ]
+
+    libsname = [hetapmodule      : "hetapmodule",
+                hetsmartlink     : "hetsmartlink",
+                realtekmodule    : "realtekmodule",
+                xlwmodule        : "xlwmodule",
+                sctechmodule     : "sctechmodule",
+                elianmodule      : "elianmodule",
+                marvellmodule    : "marvellmodule",
+                esptouchmodule   : "esptouchmodule",
+                cooeemodule      : "cooeemodule",
+
+                hetlogsdk        : "hetlogsdk",
+                hetbindbizsdk    : "hetbindbizsdk",
+                hetbinduisdk     : "hetbinduisdk",
+                hetxmlprotocolsdk: "hetxmlprotocolsdk"
+    ]
+
+    //HeT依赖库
+    dependencies = ["hetapmodule"      : "${GROUP}:${libsname.hetapmodule}:${libsversion.hetapmodule}",
+                    "hetsmartlink"     : "${GROUP}:${libsname.hetsmartlink}:${libsversion.hetsmartlink}",
+                    "realtekmodule"    : "${GROUP}:${libsname.realtekmodule}:${libsversion.realtekmodule}",
+                    "xlwmodule"        : "${GROUP}:${libsname.xlwmodule}:${libsversion.xlwmodule}",
+                    "sctechmodule"     : "${GROUP}:${libsname.sctechmodule}:${libsversion.sctechmodule}",
+                    "elianmodule"      : "${GROUP}:${libsname.elianmodule}:${libsversion.elianmodule}",
+                    "marvellmodule"    : "${GROUP}:${libsname.marvellmodule}:${libsversion.marvellmodule}",
+                    "esptouchmodule"   : "${GROUP}:${libsname.esptouchmodule}:${libsversion.esptouchmodule}",
+                    "cooeemodule"      : "${GROUP}:${libsname.cooeemodule}:${libsversion.cooeemodule}",
+
+                    "hetlogsdk"        : "${GROUP}:${libsname.hetlogsdk}:${libsversion.hetlogsdk}",
+                    "hetbindbizsdk"    : "${GROUP}:${libsname.hetbindbizsdk}:${libsversion.hetbindbizsdk}",
+                    "hetbinduisdk"     : "${GROUP}:${libsname.hetbinduisdk}:${libsversion.hetbinduisdk}",
+                    "hetxmlprotocolsdk": "${GROUP}:${libsname.hetxmlprotocolsdk}:${libsversion.hetxmlprotocolsdk}"
+    ]
+}
+
+//println("###############"+ext.libsversion.toString())
+//ext.libsversion
+
+ext.libsversion.each{  //调用它的each函数，只要传入一个Closure就可以了。
+    println "################### ${it}"
+}
