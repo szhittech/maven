@@ -48,12 +48,8 @@ def getSnapshotRepositoryUrl() {
 
 def getRepositoryUsername() {
     if (isHet()){
-        println("==========提交版本到HeT私服==="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
-        println("============Snapshot:"+getSnapshotRepositoryUrl() + " Release:"+getReleaseRepositoryUrl())
         return rootProject.ext.config.NEXUS_USERNAME_HET
     }else{
-        println("==========提交版本到远程Maven私服==="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
-        println("============Snapshot:"+getSnapshotRepositoryUrl() + " Release:"+getReleaseRepositoryUrl())
         return rootProject.ext.config.NEXUS_USERNAME
     }
 
@@ -133,6 +129,13 @@ afterEvaluate { project ->
         from androidJavadocs.destinationDir
     }
     task androidSourcesJar(type: Jar) {
+        if (isHet()){
+            println("==========提交版本到HeT私服==="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
+            println("============Snapshot:"+getSnapshotRepositoryUrl() + "\r\n Release:"+getReleaseRepositoryUrl())
+        }else{
+            println("==========提交版本到远程Maven私服==="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
+            println("============Snapshot:"+getSnapshotRepositoryUrl() + "\r\n Release:"+getReleaseRepositoryUrl())
+        }
         classifier = 'sources'
         from android.sourceSets.main.java.sourceFiles
     }
