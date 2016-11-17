@@ -1,4 +1,39 @@
 ext {
+    //默认参数配置
+    config = [GROUP                  : "com.github.szhittech",
+              POM_PACKAGING          : "aar",
+              HET_NEXUS_RELEASES     : "http://200.200.200.40:8083/nexus/content/repositories/releases/",//#发布releases版的地址
+              HET_NEXUS_SNAPSHOTS    : "http://200.200.200.40:8083/nexus/content/repositories/snapshots/",//#发布snapshots版的地址
+              JCENTER_NEXUS_SNAPSHOTS: "https://oss.sonatype.org/content/repositories/snapshots/",//#JCenter快照版snapshots的地址
+              JCENTER_NEXUS_RELEASES : "https://oss.sonatype.org/service/local/staging/deploy/maven2/",//#JCenter快照版RELEASES 的地址
+              NEXUS_USERNAME         : "szhittech",
+              NEXUS_PASSWORD         : "het123456",
+              NEXUS_USERNAME_HET     : "admin",
+              NEXUS_PASSWORD_HET     : "admin123",
+              POM_DESCRIPTION        : "szhittech",
+              POM_URL                : "https://github.com/szhittech/szhittech",
+              POM_SCM_URL            : "https://github.com/szhittech/szhittech",
+              POM_SCM_CONNECTION     : "scm:git@github.com:szhittech/szhittech.git",
+              POM_SCM_DEV_CONNECTION : "scm:git@github.com:szhittech/szhittech.git",
+              POM_LICENCE_NAME       : "The Apache Software License, Version 2.0",
+              POM_LICENCE_URL        : "http://www.apache.org/licenses/LICENSE-2.0.txt",
+              POM_LICENCE_DIST       : "repo",
+              POM_DEVELOPER_ID       : "szhittech",
+              POM_DEVELOPER_ID       : "szhittech"
+
+    ]
+
+    allprojects {
+        repositories {
+            //设置本地nexus仓库环境地址
+            maven { url config.HET_NEXUS_RELEASES }
+            maven { url config.HET_NEXUS_SNAPSHOTS }
+            //设置远程nexus仓库环境地址
+            maven { url config.JCENTER_NEXUS_SNAPSHOTS }
+            maven { url config.JCENTER_NEXUS_RELEASES }
+        }
+    }
+
     //Android编译版本管理
     android = [compileSdkVersion: 23,
                buildToolsVersion: "23.0.2",
@@ -20,7 +55,7 @@ ext {
                          "fresco"             : 'com.facebook.fresco:fresco:0.9.0+'
     ]
 
-    //HeT依赖库版本管理
+    //HeT模块版本
     libsversion = [hetapmodule      : "1.0.0-SNAPSHOT",//和而泰AP绑定(hetapmodule) 模组ID：28
                    hetsmartlink     : "1.0.0-SNAPSHOT", //和而泰smartlink绑定(在庆科基础上修改 hetsmartlink) 模组ID：10
                    realtekmodule    : "1.0.0-SNAPSHOT",//科中龙(realtekmodule) 模组ID：4
@@ -38,6 +73,7 @@ ext {
                    hetxmlprotocolsdk: "1.0.0-SNAPSHOT",//xml协议解析库
     ]
 
+    //HeT模块名称
     libsname = [hetapmodule      : "hetapmodule",
                 hetsmartlink     : "hetsmartlink",
                 realtekmodule    : "realtekmodule",
@@ -51,30 +87,30 @@ ext {
                 hetlogsdk        : "hetlogsdk",
                 hetbindbizsdk    : "hetbindbizsdk",
                 hetbinduisdk     : "hetbinduisdk",
+                hetudpsdk        : "hetudpsdk",
                 hetxmlprotocolsdk: "hetxmlprotocolsdk"
     ]
 
     //HeT依赖库
-    dependencies = ["hetapmodule"      : "${GROUP}:${libsname.hetapmodule}:${libsversion.hetapmodule}",
-                    "hetsmartlink"     : "${GROUP}:${libsname.hetsmartlink}:${libsversion.hetsmartlink}",
-                    "realtekmodule"    : "${GROUP}:${libsname.realtekmodule}:${libsversion.realtekmodule}",
-                    "xlwmodule"        : "${GROUP}:${libsname.xlwmodule}:${libsversion.xlwmodule}",
-                    "sctechmodule"     : "${GROUP}:${libsname.sctechmodule}:${libsversion.sctechmodule}",
-                    "elianmodule"      : "${GROUP}:${libsname.elianmodule}:${libsversion.elianmodule}",
-                    "marvellmodule"    : "${GROUP}:${libsname.marvellmodule}:${libsversion.marvellmodule}",
-                    "esptouchmodule"   : "${GROUP}:${libsname.esptouchmodule}:${libsversion.esptouchmodule}",
-                    "cooeemodule"      : "${GROUP}:${libsname.cooeemodule}:${libsversion.cooeemodule}",
+    dependencies = ["hetapmodule"      : "${config.GROUP}:${libsname.hetapmodule}:${libsversion.hetapmodule}",
+                    "hetsmartlink"     : "${config.GROUP}:${libsname.hetsmartlink}:${libsversion.hetsmartlink}",
+                    "realtekmodule"    : "${config.GROUP}:${libsname.realtekmodule}:${libsversion.realtekmodule}",
+                    "xlwmodule"        : "${config.GROUP}:${libsname.xlwmodule}:${libsversion.xlwmodule}",
+                    "sctechmodule"     : "${config.GROUP}:${libsname.sctechmodule}:${libsversion.sctechmodule}",
+                    "elianmodule"      : "${config.GROUP}:${libsname.elianmodule}:${libsversion.elianmodule}",
+                    "marvellmodule"    : "${config.GROUP}:${libsname.marvellmodule}:${libsversion.marvellmodule}",
+                    "esptouchmodule"   : "${config.GROUP}:${libsname.esptouchmodule}:${libsversion.esptouchmodule}",
+                    "cooeemodule"      : "${config.GROUP}:${libsname.cooeemodule}:${libsversion.cooeemodule}",
 
-                    "hetlogsdk"        : "${GROUP}:${libsname.hetlogsdk}:${libsversion.hetlogsdk}",
-                    "hetbindbizsdk"    : "${GROUP}:${libsname.hetbindbizsdk}:${libsversion.hetbindbizsdk}",
-                    "hetbinduisdk"     : "${GROUP}:${libsname.hetbinduisdk}:${libsversion.hetbinduisdk}",
-                    "hetxmlprotocolsdk": "${GROUP}:${libsname.hetxmlprotocolsdk}:${libsversion.hetxmlprotocolsdk}"
+                    "hetlogsdk"        : "${config.GROUP}:${libsname.hetlogsdk}:${libsversion.hetlogsdk}",
+                    "hetbindbizsdk"    : "${config.GROUP}:${libsname.hetbindbizsdk}:${libsversion.hetbindbizsdk}",
+                    "hetbinduisdk"     : "${config.GROUP}:${libsname.hetbinduisdk}:${libsversion.hetbinduisdk}",
+                    "hetudpsdk"        : "${config.GROUP}:${libsname.hetudpsdk}:${libsversion.hetudpsdk}",
+                    "hetxmlprotocolsdk": "${config.GROUP}:${libsname.hetxmlprotocolsdk}:${libsversion.hetxmlprotocolsdk}"
     ]
 }
 
-//println("###############"+ext.libsversion.toString())
-//ext.libsversion
 
-ext.libsversion.each{  //调用它的each函数，只要传入一个Closure就可以了。
-    println "################### ${it}"
+ext.libsversion.each {  //调用它的each函数，只要传入一个Closure就可以了。
+    println "##########当前版本: ${it}"
 }
