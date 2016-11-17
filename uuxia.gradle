@@ -1,8 +1,8 @@
 ext{
    test = [uuxia:"xiaxiaoli:1.0.0",
-uufeng:"feng:1.0",
-uuling:"qqqqqqq",
-uupeng:"9999999"
+uufeng:"iiiiiiiii",
+uuling:"1111111",
+uupeng:"uuuuuuuu"
 ]
 }
 println("###############"+ext.test.toString())
