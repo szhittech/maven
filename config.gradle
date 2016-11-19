@@ -1,3 +1,18 @@
+//提交Maven的Task任务，此Task将提交工程中Setting.gradle中申明的所有library工程，执行此Task一定要检查library版本和依赖的正确性，要很慎重!!!
+task upload() {
+    Set<Project> uploadProjects = new HashSet<>();
+    getSubprojects().each {
+        if (it.getSubprojects().isEmpty()){
+            uploadProjects.add(it)
+        }
+    }
+    println '<<<<<<需要提交的项目列表,请仔细检查>>>>>>>' + uploadProjects.toString()
+    dependsOn {
+        uploadProjects.uploadArchives
+    }
+
+}
+//全局扩展参数
 ext {
     //默认参数配置
     config = [GROUP                  : "com.github.szhittech",
@@ -36,7 +51,7 @@ ext {
 
     //Android编译版本管理
     android = [compileSdkVersion: 23,
-               buildToolsVersion: "23.0.2",
+               buildToolsVersion: "23.0.1",
                minSdkVersion    : 15,
                targetSdkVersion : 23,
                versionCode      : 1,
@@ -110,7 +125,7 @@ ext {
     ]
 }
 
-
+//打印当前申明的library的版本号，编译操作者检查,根据此日志在提交的时候要核对版本正确性
 ext.libsversion.each {  //调用它的each函数，只要传入一个Closure就可以了。
-    println "##########当前版本: ${it}"
+    println "<<<<<<<<<<当前版本: ${it}"
 }
