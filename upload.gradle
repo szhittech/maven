@@ -79,7 +79,7 @@ afterEvaluate { project ->
                     } else {
                         println("==========提交版本到远程Maven私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
                     }
-                    println '正在打Release......' + + getReleaseRepositoryUrl()
+                    println '正在打Release......' + getReleaseRepositoryUrl()
                     beforeDeployment {
                         MavenDeployment deployment -> signing.signPom(deployment)
                     }
