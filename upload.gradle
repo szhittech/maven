@@ -14,51 +14,56 @@
  * limitations under the License.
  */
 
+// https://oss.sonatype.org/#welcome
 apply plugin: 'maven'
 //becase het is not sigining
-//apply plugin: 'signing'
+
 def isHet() {
     def has = hasProperty('NEXUS_TYPE');
-    if (has){
-        return NEXUS_TYPE.contains("maven")?false:true;
-    }else{
+    if (has) {
+        return NEXUS_TYPE.contains("maven") ? false : true;
+    } else {
         return true;
     }
 }
 
-def isReleaseBuild(String name) {
-    return name.contains("SNAPSHOT") == false
+def isReleaseBuild() {
+    return rootProject.ext.libsversion["${project.modulename}"].contains("SNAPSHOT") == false
+}
+
+if (isReleaseBuild()) {
+    apply plugin: 'signing'
 }
 
 def getReleaseRepositoryUrl() {
-    if (isHet()){
+    if (isHet()) {
         return rootProject.ext.config.HET_NEXUS_RELEASES
-    }else{
+    } else {
         return rootProject.ext.config.JCENTER_NEXUS_RELEASES
     }
 }
 
 def getSnapshotRepositoryUrl() {
-    if (isHet()){
+    if (isHet()) {
         return rootProject.ext.config.HET_NEXUS_SNAPSHOTS
-    }else{
+    } else {
         return rootProject.ext.config.JCENTER_NEXUS_SNAPSHOTS
     }
 }
 
 def getRepositoryUsername() {
-    if (isHet()){
+    if (isHet()) {
         return rootProject.ext.config.NEXUS_USERNAME_HET
-    }else{
+    } else {
         return rootProject.ext.config.NEXUS_USERNAME
     }
 
 }
 
 def getRepositoryPassword() {
-    if (isHet()){
+    if (isHet()) {
         return rootProject.ext.config.NEXUS_PASSWORD_HET
-    }else{
+    } else {
         return rootProject.ext.config.NEXUS_PASSWORD
     }
 }
@@ -68,7 +73,26 @@ afterEvaluate { project ->
         repositories {
             mavenDeployer {
                 //becase het is not sigining pad POM_ARTIFACT_ID VERSION_NAME
-                //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                if (isReleaseBuild()) {
+                    if (isHet()) {
+                        println("==========提交版本到HeT私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                    } else {
+                        println("==========提交版本到远程Maven私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                    }
+                    println '正在打Release......' + + getReleaseRepositoryUrl()
+                    beforeDeployment {
+                        MavenDeployment deployment -> signing.signPom(deployment)
+                    }
+                } else {
+                    if (isHet()) {
+                        println("==========提交版本到HeT私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                    } else {
+                        println("==========提交版本到远程Maven私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                    }
+                    println '正在打SNAPSHOT......' + getSnapshotRepositoryUrl()
+                }
+
+
                 pom.groupId = rootProject.ext.config.GROUP
                 pom.artifactId = rootProject.ext.libsname["${project.modulename}"]
                 pom.version = rootProject.ext.libsversion["${project.modulename}"]
@@ -112,12 +136,13 @@ afterEvaluate { project ->
             }
         }
     }
-//becase het is not sigining
-    /*signing {
-        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
-        sign configurations.archives
-    }*/
-
+    //becase het is not sigining
+    if (isReleaseBuild()) {
+        signing {
+            required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+            sign configurations.archives
+        }
+    }
 
     //all right,add this code will result in the unreadable code
     task androidJavadocs(type: Javadoc) {
@@ -129,24 +154,12 @@ afterEvaluate { project ->
         from androidJavadocs.destinationDir
     }
     task androidSourcesJar(type: Jar) {
-        if (isHet()){
-            boolean isRelease = isReleaseBuild(rootProject.ext.libsversion["${project.modulename}"])
-            println("==========提交版本到HeT私服==="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
-            if (isRelease){
-                println("=============Release:"+getReleaseRepositoryUrl())
-            }else{
-                println("============Snapshot:"+getSnapshotRepositoryUrl())
-            }
-        }else{
-            println("==========提交版本到远程Maven私服==="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
-            if (isRelease){
-                println("=============Release:"+getReleaseRepositoryUrl())
-            }else{
-                println("============Snapshot:"+getSnapshotRepositoryUrl())
-            }
+        boolean isRelease = isReleaseBuild()
+        boolean isSource = hasProperty('SOURCESCODE')
+        if (!isRelease && isSource) {
+            classifier = 'sources'
+            from android.sourceSets.main.java.sourceFiles
         }
-        classifier = 'sources'
-        from android.sourceSets.main.java.sourceFiles
     }
     artifacts {
         archives androidSourcesJar
