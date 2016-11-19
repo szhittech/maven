@@ -26,8 +26,8 @@ def isHet() {
     }
 }
 
-def isReleaseBuild() {
-    return VERSION_NAME.contains("SNAPSHOT") == false
+def isReleaseBuild(String name) {
+    return name.contains("SNAPSHOT") == false
 }
 
 def getReleaseRepositoryUrl() {
@@ -130,11 +130,20 @@ afterEvaluate { project ->
     }
     task androidSourcesJar(type: Jar) {
         if (isHet()){
+            boolean isRelease = isReleaseBuild(rootProject.ext.libsversion["${project.modulename}"])
             println("==========提交版本到HeT私服==="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
-            println("============Snapshot:"+getSnapshotRepositoryUrl() + "\r\n============Release:"+getReleaseRepositoryUrl())
+            if (isRelease){
+                println("=============Release:"+getReleaseRepositoryUrl())
+            }else{
+                println("============Snapshot:"+getSnapshotRepositoryUrl())
+            }
         }else{
             println("==========提交版本到远程Maven私服==="+rootProject.ext.config.GROUP+":"+rootProject.ext.libsname["${project.modulename}"]+":"+rootProject.ext.libsversion["${project.modulename}"])
-            println("============Snapshot:"+getSnapshotRepositoryUrl() + "\r\n============Release:"+getReleaseRepositoryUrl())
+            if (isRelease){
+                println("=============Release:"+getReleaseRepositoryUrl())
+            }else{
+                println("============Snapshot:"+getSnapshotRepositoryUrl())
+            }
         }
         classifier = 'sources'
         from android.sourceSets.main.java.sourceFiles
