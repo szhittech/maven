@@ -27,8 +27,8 @@ ext {
     allprojects {
         repositories {
             //设置本地nexus仓库环境地址
-            maven { url config.HET_NEXUS_RELEASES }
-            maven { url config.HET_NEXUS_SNAPSHOTS }
+            //maven { url config.HET_NEXUS_RELEASES }
+            //maven { url config.HET_NEXUS_SNAPSHOTS }
             //设置远程nexus仓库环境地址
             maven { url config.JCENTER_NEXUS_SNAPSHOTS }
             maven { url config.JCENTER_NEXUS_RELEASES }
