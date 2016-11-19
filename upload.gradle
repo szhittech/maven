@@ -111,13 +111,14 @@ afterEvaluate { project ->
                     //annotation
                     //url rootProject.ext.config.POM_URL
 
+                    if (isReleaseBuild()) {
                     //becase het is not connect the third Maven Centeral
-                    /*scm {
+                    scm {
                         url rootProject.ext.config.POM_SCM_URL
                         connection rootProject.ext.config.POM_SCM_CONNECTION
                         developerConnection rootProject.ext.config.POM_SCM_DEV_CONNECTION
-                    }*/
-
+                    }
+                    }
                     licenses {
                         license {
                             name rootProject.ext.config.POM_LICENCE_NAME
