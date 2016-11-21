@@ -28,6 +28,15 @@ def isHet() {
     }
 }
 
+def isSourceCode() {
+    def has = hasProperty('SOURCESCODE');
+    if (has) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 def isReleaseBuild() {
     return rootProject.ext.libsversion["${project.modulename}"].contains("SNAPSHOT") == false
 }
@@ -71,22 +80,22 @@ afterEvaluate { project ->
             mavenDeployer {
                 //becase het is not sigining pad POM_ARTIFACT_ID VERSION_NAME
                 beforeDeployment {
-                        MavenDeployment deployment -> signing.signPom(deployment)
-                    }
+                    MavenDeployment deployment -> signing.signPom(deployment)
+                }
                 if (isReleaseBuild()) {
                     if (isHet()) {
-                        println("==========提交版本到HeT私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                        logger.lifecycle("==========提交版本到HeT私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
                     } else {
-                        println("==========提交版本到远程Maven私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                        logger.lifecycle("==========提交版本到远程Maven私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
                     }
-                    println '正在打Release......' + getReleaseRepositoryUrl()
+                    logger.lifecycle '正在打Release......' + getReleaseRepositoryUrl()
                 } else {
                     if (isHet()) {
-                        println("==========提交版本到HeT私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                        logger.lifecycle("==========提交版本到HeT私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
                     } else {
-                        println("==========提交版本到远程Maven私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                        logger.lifecycle("==========提交版本到远程Maven私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
                     }
-                    println '正在打SNAPSHOT......' + getSnapshotRepositoryUrl()
+                    logger.lifecycle('正在打SNAPSHOT......' + getSnapshotRepositoryUrl())
                 }
 
 
@@ -108,10 +117,10 @@ afterEvaluate { project ->
                     url rootProject.ext.config.POM_URL
 
                     scm {
-                            url rootProject.ext.config.POM_SCM_URL
-                            connection rootProject.ext.config.POM_SCM_CONNECTION
-                            developerConnection rootProject.ext.config.POM_SCM_DEV_CONNECTION
-                        }
+                        url rootProject.ext.config.POM_SCM_URL
+                        connection rootProject.ext.config.POM_SCM_CONNECTION
+                        developerConnection rootProject.ext.config.POM_SCM_DEV_CONNECTION
+                    }
                     licenses {
                         license {
                             name rootProject.ext.config.POM_LICENCE_NAME
@@ -132,9 +141,9 @@ afterEvaluate { project ->
     }
     //becase het is not sigining
     signing {
-            required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
-            sign configurations.archives
-        }
+        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+        sign configurations.archives
+    }
 
     //all right,add this code will result in the unreadable code
     task androidJavadocs(type: Javadoc) {
@@ -146,15 +155,16 @@ afterEvaluate { project ->
         from androidJavadocs.destinationDir
     }
     task androidSourcesJar(type: Jar) {
-        boolean isRelease = isReleaseBuild()
-        boolean isSource = hasProperty('SOURCESCODE')
-        if (!isRelease && isSource) {
-            classifier = 'sources'
-            from android.sourceSets.main.java.sourceFiles
-        }
+        classifier = 'sources'
+        from android.sourceSets.main.java.sourceFiles
     }
     artifacts {
-        archives androidSourcesJar
+        boolean isRelease = isReleaseBuild()
+        boolean isSource = isSourceCode()
+        logger.lifecycle('#### isReleaseBuild '+ isRelease +'  isSource ' + isSource)
+        if (!isRelease && isSource) {
+            archives androidSourcesJar
+        }
         //archives androidJavadocsJar
     }
 }
