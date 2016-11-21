@@ -35,12 +35,10 @@ ext {
     allprojects {
         repositories {
             if (isHet()) {
-                println '####### HeT Nexus....'
                 //设置本地nexus仓库环境地址
                 maven { url config.HET_NEXUS_RELEASES }
                 maven { url config.HET_NEXUS_SNAPSHOTS }
-            }else {
-                println '####### Sonatype Nexus....'
+            } else {
                 //设置远程nexus仓库环境地址
                 maven { url config.JCENTER_NEXUS_SNAPSHOTS }
                 maven { url config.JCENTER_NEXUS_RELEASES }
@@ -69,23 +67,26 @@ ext {
                          "fresco"             : 'com.facebook.fresco:fresco:0.9.0+'
     ]
 
+    //如果要提交release版，则定义snapshot=""
+    String snapshot = "-SNAPSHOT"
+//    String snapshot = ""
     //HeT模块版本
-    libsversion = [hetapmodule      : "1.0.0-SNAPSHOT",//和而泰AP绑定(hetapmodule) 模组ID：28
-                   hetsmartlink     : "1.0.0-SNAPSHOT", //和而泰smartlink绑定(在庆科基础上修改 hetsmartlink) 模组ID：10
-                   realtekmodule    : "1.0.0-SNAPSHOT",//科中龙(realtekmodule) 模组ID：4
-                   xlwmodule        : "1.0.0-SNAPSHOT",//新力维_NL6621底层库(xlwmodule) 模组ID：6
-                   sctechmodule     : "1.0.0-SNAPSHOT",//双驰达(sctechmodule) 模组ID：15
-                   elianmodule      : "1.0.0-SNAPSHOT",//信驰达_MTK7681底层库(elianmodule) 模组ID：5
-                   marvellmodule    : "1.0.0-SNAPSHOT",//Marvell(marvellmodule) 模组ID：v1=8，v2=27
-                   esptouchmodule   : "1.0.0-SNAPSHOT", //乐鑫信息科技(esptouchmodule) 模组ID：7
-                   cooeemodule      : "1.0.0-SNAPSHOT",//博通(cooeemodule) 模组ID：20
+    libsversion = [hetapmodule      : "1.0.0" + snapshot,//和而泰AP绑定(hetapmodule) 模组ID：28
+                   hetsmartlink     : "1.0.0" + snapshot, //和而泰smartlink绑定(在庆科基础上修改 hetsmartlink) 模组ID：10
+                   realtekmodule    : "1.0.0" + snapshot,//科中龙(realtekmodule) 模组ID：4
+                   xlwmodule        : "1.0.0" + snapshot,//新力维_NL6621底层库(xlwmodule) 模组ID：6
+                   sctechmodule     : "1.0.0" + snapshot,//双驰达(sctechmodule) 模组ID：15
+                   elianmodule      : "1.0.0" + snapshot,//信驰达_MTK7681底层库(elianmodule) 模组ID：5
+                   marvellmodule    : "1.0.0" + snapshot,//Marvell(marvellmodule) 模组ID：v1=8，v2=27
+                   esptouchmodule   : "1.0.0" + snapshot, //乐鑫信息科技(esptouchmodule) 模组ID：7
+                   cooeemodule      : "1.0.0" + snapshot,//博通(cooeemodule) 模组ID：20
 
-                   hetlogsdk        : "1.0.0-SNAPSHOT",//全局日志库
-                   hetbindbizsdk    : "1.0.2-SNAPSHOT",//绑定业务库
-                   hetbinduisdk     : "1.0.2-SNAPSHOT",//绑定界面库
-                   hetudpsdk        : "1.0.4-SNAPSHOT",//udp通讯库
-                   hetxmlprotocolsdk: "1.0.0-SNAPSHOT",//xml协议解析库
-                   hetbasicsdk      : "1.0.5-SNAPSHOT"//xml协议解析库
+                   hetlogsdk        : "1.0.0" + snapshot,//全局日志库
+                   hetbindbizsdk    : "1.0.2" + snapshot,//绑定业务库
+                   hetbinduisdk     : "1.0.2" + snapshot,//绑定界面库
+                   hetudpsdk        : "1.0.4" + snapshot,//udp通讯库
+                   hetxmlprotocolsdk: "1.0.0" + snapshot,//xml协议解析库
+                   hetbasicsdk      : "1.0.5" + snapshot//xml协议解析库
     ]
 
     //HeT模块名称
@@ -129,7 +130,7 @@ ext {
 
 //打印当前申明的library的版本号，编译操作者检查,根据此日志在提交的时候要核对版本正确性
 ext.libsversion.each {  //调用它的each函数，只要传入一个Closure就可以了。
-    //println "###当前版本: ${it}"
+    println "###当前版本: ${it}"
 }
 
 //提交Maven的Task任务，此Task将提交工程中Setting.gradle中申明的所有library工程，执行此Task一定要检查library版本和依赖的正确性，要很慎重!!!
