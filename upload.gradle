@@ -17,6 +17,7 @@
 // https://oss.sonatype.org/#welcome
 apply plugin: 'maven'
 //becase het is not sigining
+apply plugin: 'signing'
 
 def isHet() {
     def has = hasProperty('NEXUS_TYPE');
@@ -29,10 +30,6 @@ def isHet() {
 
 def isReleaseBuild() {
     return rootProject.ext.libsversion["${project.modulename}"].contains("SNAPSHOT") == false
-}
-
-if (isReleaseBuild()) {
-    apply plugin: 'signing'
 }
 
 def getReleaseRepositoryUrl() {
@@ -73,6 +70,9 @@ afterEvaluate { project ->
         repositories {
             mavenDeployer {
                 //becase het is not sigining pad POM_ARTIFACT_ID VERSION_NAME
+                beforeDeployment {
+                        MavenDeployment deployment -> signing.signPom(deployment)
+                    }
                 if (isReleaseBuild()) {
                     if (isHet()) {
                         println("==========提交版本到HeT私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
@@ -80,9 +80,6 @@ afterEvaluate { project ->
                         println("==========提交版本到远程Maven私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
                     }
                     println '正在打Release......' + getReleaseRepositoryUrl()
-                    beforeDeployment {
-                        MavenDeployment deployment -> signing.signPom(deployment)
-                    }
                 } else {
                     if (isHet()) {
                         println("==========提交版本到HeT私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
@@ -108,17 +105,13 @@ afterEvaluate { project ->
                     name project.modulename
                     packaging rootProject.ext.config.POM_PACKAGING
                     description rootProject.ext.config.POM_DESCRIPTION
+                    url rootProject.ext.config.POM_URL
 
-                    if (isReleaseBuild()) {
-                        //annotation
-                        url rootProject.ext.config.POM_URL
-                        //becase het is not connect the third Maven Centeral
-                        scm {
+                    scm {
                             url rootProject.ext.config.POM_SCM_URL
                             connection rootProject.ext.config.POM_SCM_CONNECTION
                             developerConnection rootProject.ext.config.POM_SCM_DEV_CONNECTION
                         }
-                    }
                     licenses {
                         license {
                             name rootProject.ext.config.POM_LICENCE_NAME
@@ -138,13 +131,10 @@ afterEvaluate { project ->
         }
     }
     //becase het is not sigining
-    if (isReleaseBuild()) {
-        println '正在 signing......'
-        signing {
+    signing {
             required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
             sign configurations.archives
         }
-    }
 
     //all right,add this code will result in the unreadable code
     task androidJavadocs(type: Javadoc) {
