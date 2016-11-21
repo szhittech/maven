@@ -137,10 +137,12 @@ afterEvaluate { project ->
             }
         }
     }
-    //becase het is not sigining
-    signing {
-        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
-        sign configurations.archives
+    if (isReleaseBuild()) {
+        //becase het is not sigining
+        signing {
+            required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+            sign configurations.archives
+        }
     }
 
     //all right,add this code will result in the unreadable code
