@@ -84,18 +84,16 @@ afterEvaluate { project ->
                         MavenDeployment deployment -> signing.signPom(deployment)
                     }
                     if (isHet()) {
-                        logger.lifecycle("==========提交版本到HeT私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                        logger.lifecycle("==正在打Release版到HeT Center===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"] + " URL:"+getReleaseRepositoryUrl())
                     } else {
-                        logger.lifecycle("==========提交版本到远程Maven私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                        logger.lifecycle("==正在打Release版到JCenter===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"] + " URL:"+getReleaseRepositoryUrl())
                     }
-                    logger.lifecycle '正在打Release......' + getReleaseRepositoryUrl()
                 } else {
                     if (isHet()) {
-                        logger.lifecycle("==========提交版本到HeT私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                        logger.lifecycle("==正在打SNAPSHOT版到HeTCenter=" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"] + " URL:"+getSnapshotRepositoryUrl())
                     } else {
-                        logger.lifecycle("==========提交版本到远程Maven私服===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"])
+                        logger.lifecycle("==正在打SNAPSHOT版到JCenter=" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"] + " URL:"+getSnapshotRepositoryUrl())
                     }
-                    logger.lifecycle('正在打SNAPSHOT......' + getSnapshotRepositoryUrl())
                 }
 
 
