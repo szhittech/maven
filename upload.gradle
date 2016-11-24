@@ -159,9 +159,8 @@ afterEvaluate { project ->
         from android.sourceSets.main.java.sourceFiles
     }
     artifacts {
-        boolean isRelease = isReleaseBuild()
         boolean isSource = isSourceCode()
-        if (!isRelease && isSource) {
+        if (isSource) {
             logger.lifecycle('#### 正在上传源代码')
             archives androidSourcesJar
         }
