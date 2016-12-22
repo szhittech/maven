@@ -111,7 +111,7 @@ afterEvaluate { project ->
         from android.sourceSets.main.java.sourceFiles
     }
     artifacts {
-        //archives androidSourcesJar
+        archives androidSourcesJar
         //archives androidJavadocsJar
     }
 }
