@@ -162,7 +162,7 @@ afterEvaluate { project ->
         //boolean isSource = isSourceCode()
         //if (isSource) {
          //   logger.lifecycle('#### 正在上传源代码')
-        //    archives androidSourcesJar
+            archives androidSourcesJar
        // }
         //archives androidJavadocsJar
     }
